@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { View, TextInput, StyleSheet, TouchableOpacity, FlatList, SafeAreaView, ActivityIndicator } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'; 
-import { searchMovie, clearSearchResult } from '../actions'
 
 const AddScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -13,26 +11,6 @@ const AddScreen = ({ navigation }) => {
     return (
     <>
         <SafeAreaView style={{ height: '100%'}}>
-                <View style={styles.searchContainer}>
-                    <TextInput
-                        autoCorrect={false}
-                        autoCapitalize={'none'}
-                        value={keyword}
-                        style={styles.input} 
-                        onChangeText={setKeyword}
-                        placeholder='Search Movie'
-                        placeholderTextColor='white'
-                    />
-                    <TouchableOpacity onPress={() => {
-                            setShowActivityIndicator(true)
-                            dispatch(clearSearchResult())
-                            dispatch(searchMovie(keyword))
-                        }
-                    }>
-                        <AntDesign name="search1" size={35} color="lightgrey" />
-                    </TouchableOpacity>
-                </View>
-
                 {
                     searchResult.length == 0 && showActivityIndicator && keyword.length != 0
                     ? <ActivityIndicator size={'large'} color={'lightgrey'} style={{flex:1}}/>
@@ -65,25 +43,6 @@ const AddScreen = ({ navigation }) => {
     </>
     )
 }
-
-const styles = StyleSheet.create({
-    searchContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 10,
-        marginTop: 15,
-        marginBottom: 10,
-        borderRadius: 15,
-        borderBottomColor: 'lightgrey',
-        borderBottomWidth: 1,
-    },
-    input: {
-        flex: 1,
-        padding: 15,
-        color: 'lightgrey',
-        fontSize: 18
-    }
-})
 
 export default AddScreen
 

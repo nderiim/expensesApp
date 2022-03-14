@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import HomeScreen from './screens/HomeScreen';
 import DetailsScreen from './screens/DetailsScreen'
 import AddScreen from './screens/AddScreen'
+import { MaterialIcons } from '@expo/vector-icons';
 
 const HomeStack = createNativeStackNavigator();
 function HomeStackScreen() {
@@ -29,6 +30,7 @@ const BottomTab = createMaterialBottomTabNavigator();
 function AppStack() {
     return (
         <BottomTab.Navigator 
+            barStyle={{ backgroundColor: 'lightgrey' }}
             shifting={true}
         >
             <BottomTab.Screen 
@@ -50,7 +52,7 @@ function AppStack() {
                     headerShown: false, 
                     tabBarLabel: 'Add',
                     tabBarIcon: () => (
-                        <MaterialCommunityIcons name="movie-search-outline" size={26} />
+                        <MaterialIcons name="create" size={24} color="black" />
                     )}
                 }
             />

@@ -1,44 +1,86 @@
-import React, { useEffect } from 'react'
-import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, TextInput, SafeAreaView, ActivityIndicator, TouchableOpacity, FlatList, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { SvgCssUri } from 'react-native-svg';
+import { AntDesign } from '@expo/vector-icons'; 
 import { getPopularMovies } from '../actions';
+import { searchMovie, clearSearchResult } from '../actions'
 
 const HomeScreen = ({ navigation }) => {
     const dispatch = useDispatch()
     const {popularMovies} = useSelector((state) => state.movieReducer);
+    const [keyword, setKeyword] = useState('')
 
-    useEffect(() => { dispatch(getPopularMovies()) }, [])
+    // useEffect(() => { dispatch(getPopularMovies()) }, [])
     
+    const shpenzimet = [
+        {
+            2022: [
+                {'Janar': []},
+                {'Shkurt': []}
+            ]
+        },
+        {
+            2021: [
+                {'Janar': []}
+            ]
+        }
+    ]
+
     return (
         <>
-            {
-                popularMovies.length != 0 ? 
-                <SafeAreaView style={{ height: '100%'}}>
-                    
-                    <View style={{ borderBottomColor: 'lightgrey', borderBottomWidth: '0.2'}}>
-                        <SvgCssUri
-                            style={styles.logo} 
-                            uri="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_1-8ba2ac31f354005783fab473602c34c3f4fd207150182061e425d366e4f34596.svg"
-                        />
-                    </View>
+            <SafeAreaView style={{ height: '100%'}}>
+                <View style={styles.searchContainer}>
+                    <TextInput
+                        autoCorrect={false}
+                        autoCapitalize={'none'}
+                        value={keyword}
+                        style={styles.input} 
+                        onChangeText={setKeyword}
+                        placeholder='Kerko shpenzim...'
+                        placeholderTextColor='black'
+                    />
+                    <TouchableOpacity onPress={() => {
+                            setShowActivityIndicator(true)
+                            dispatch(clearSearchResult())
+                            dispatch(searchMovie(keyword))
+                        }
+                    }>
+                        <AntDesign name="search1" size={35} color="black" />
+                    </TouchableOpacity>
+                </View>
+                
+                <View>
+                    <FlatList
+                        keyExtractor={() => Math.random() * 10}
+                        data={shpenzimet}
+                        renderItem={({item, index}) => 
+                            <Text></Text>
+                        }
+                    />
+                </View>
 
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <MainMovies navigation={navigation} movies={popularMovies}/>
-                        <CategoriesList navigation={navigation} />
-                    </ScrollView>
-                    
-                </SafeAreaView>
-                : <ActivityIndicator size={'large'} color={'lightgrey'} style={{ flex: 1}}/>
-            }
+
+            </SafeAreaView>
         </>
     )
 }
 
 const styles = StyleSheet.create({
-    logo:{
-        height: 40, 
-        margin: 10
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        marginTop: 15,
+        marginBottom: 10,
+        borderRadius: 15,
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+    },
+    input: {
+        flex: 1,
+        padding: 15,
+        color: 'lightgrey',
+        fontSize: 18
     }
 })
 
